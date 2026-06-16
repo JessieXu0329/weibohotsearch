@@ -3,11 +3,9 @@
 import sys
 import io
 import pandas as pd
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 def show_tag_distribution():
-    """显示标签分布情况"""
     df = pd.read_csv('weibo_hot_search.csv', encoding='utf-8-sig')
     
     print("=" * 50)

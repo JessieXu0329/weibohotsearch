@@ -7,7 +7,8 @@ from datetime import datetime
 from common import URL, HEADERS
 import requests
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+# 解决控制台及重定向时的中文乱码与表情符号编码问题
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 def fetch_data():
     """获取原始数据"""
@@ -24,9 +25,8 @@ def parse_data(hot_list):
         record = {
             '排名': i + 1,
             '话题词': item.get('word', ''),
-            '热度值': item.get('raw_hot') or item.get('hot', ''),
-            '标签': item.get('flag_desc', ''),
-            '类别': item.get('category', ''),
+            '热度值': item.get('num') or item.get('raw_hot') or item.get('hot') or '',
+            '标签': item.get('label_name') or item.get('flag_desc') or '',
             '采集时间': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         results.append(record)
@@ -39,7 +39,7 @@ def save_to_csv(data, filename='weibo_hot_search.csv'):
         return False
     
     with open(filename, 'w', newline='', encoding='utf-8-sig') as f:
-        writer = csv.DictWriter(f, fieldnames=['排名', '话题词', '热度值', '标签', '类别', '采集时间'])
+        writer = csv.DictWriter(f, fieldnames=['排名', '话题词', '热度值', '标签', '采集时间'])
         writer.writeheader()
         writer.writerows(data)
     

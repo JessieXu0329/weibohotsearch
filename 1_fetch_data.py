@@ -5,8 +5,8 @@ import io
 import requests
 from common import URL, HEADERS
 
-# 解决控制台中文乱码
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+# 解决控制台及重定向时的中文乱码与表情符号编码问题
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 def fetch_data():
     """获取微博热搜原始数据"""
@@ -26,3 +26,4 @@ if __name__ == '__main__':
     hot_list = fetch_data()
     if hot_list:
         print(f"采集到 {len(hot_list)} 条原始数据")
+

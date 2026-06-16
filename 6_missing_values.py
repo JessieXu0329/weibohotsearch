@@ -4,7 +4,8 @@ import sys
 import io
 import pandas as pd
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+# 解决控制台及重定向时的中文乱码与表情符号编码问题
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 def check_missing_values():
     """检查缺失值情况"""
